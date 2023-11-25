@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Registro - Mi Aplicación{% endblock %}
+
+{% block content %}
+    <h2>Registro</h2>
+    <form method="post" action="{% url 'registro' %}">
+        {% csrf_token %}
+        <label for="id_username">Nombre de Usuario:</label>
+        <input type="text" name="username" id="id_username" required>
+        <br>
+        <label for="id_email">Correo Electrónico:</label>
+        <input type="email" name="email" id="id_email" required>
+        <br>
+        <label for="id_password1">Contraseña:</label>
+        <input type="password" name="password1" id="id_password1" required>
+        <br>
+        <label for="id_password2">Confirmar Contraseña:</label>
+        <input type="password" name="password2" id="id_password2" required>
+        <br>
+        <input type="submit" value="Registrarse">
+    </form>
+    <br>
+    <a href="{% url 'inicio_sesion' %}">¿Ya tienes una cuenta? Inicia sesión aquí</a>
+{% endblock %}

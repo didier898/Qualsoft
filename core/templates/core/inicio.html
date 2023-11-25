@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Bienvenido a Mi Proyecto{% endblock %}
+
+{% block content %}
+{% load static %}
+
+    <div>
+        <img src="{% static 'core/software.png' %}" alt="Imagen de Bienvenida">
+    </div>
+    <div>
+        <a href="{% url 'inicio_sesion' %}">Iniciar Sesión</a>
+    </div>
+    <div>
+        <a href="{% url 'registro' %}">¿No tienes una cuenta? Regístrate aquí</a>
+    </div>
+{% endblock %}
+
