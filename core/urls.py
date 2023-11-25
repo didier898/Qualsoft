@@ -2,7 +2,8 @@
 
 from django.urls import path
 from . import views
-from .views import inicio_sesion, registro, principal
+from .views import inicio_sesion, registro, principal, MisProyectosView
+
 
 
 urlpatterns = [
@@ -10,4 +11,5 @@ urlpatterns = [
     path('inicio-sesion/', inicio_sesion, name='inicio_sesion'),
     path('registro/', registro, name='registro'),
     path('principal/', principal, name='principal'),
+    path('mis_proyectos/', MisProyectosView.as_view(), name='mis_proyectos'),
 ]

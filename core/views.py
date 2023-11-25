@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
+from django.views import View
+from .models import Proyecto
 
 def inicio(request):
     return render(request, 'core/inicio.html')
@@ -35,3 +37,14 @@ def registro(request):
 def principal(request):
     # Puedes agregar lógica adicional aquí si es necesario
     return render(request, 'core/principal.html')
+
+class MisProyectosView(View):
+    template_name = 'core/mis_proyectos.html'  # Ruta a tu plantilla
+
+    def get(self, request, *args, **kwargs):
+        # Obtener todos los proyectos del usuario actual
+        proyectos = Proyecto.objects.filter(id_usuario=request.user)
+
+        # Pasar los proyectos a la plantilla
+        context = {'proyectos': proyectos}
+        return render(request, self.template_name, context)
