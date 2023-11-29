@@ -38,13 +38,61 @@ def principal(request):
     # Puedes agregar lógica adicional aquí si es necesario
     return render(request, 'core/principal.html')
 
-class MisProyectosView(View):
-    template_name = 'core/mis_proyectos.html'  # Ruta a tu plantilla
+def mis_proyectos(request):
+    # Obtén todos los proyectos del usuario actual
+    proyectos = Proyecto.objects.filter(usuario=request.user)
+
+    # Puedes agregar más contexto según sea necesario
+
+    return render(request, 'core/mis_proyectos.html', {'proyectos': proyectos})
+
+class CrearProyectoView(View):
+    template_name = 'core/crear_proyecto.html'
 
     def get(self, request, *args, **kwargs):
-        # Obtener todos los proyectos del usuario actual
-        proyectos = Proyecto.objects.filter(id_usuario=request.user)
+        return render(request, self.template_name)
 
-        # Pasar los proyectos a la plantilla
-        context = {'proyectos': proyectos}
-        return render(request, self.template_name, context)
+
+class EstablecerRequisitosView(View):
+    template_name = 'core/establecer_requisitos.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+class EspecificarEvaluacionView(View):
+    template_name = 'core/especificar_evaluacion.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+    
+class EvaluarProductoView(View):
+    template_name = 'core/evaluar_producto.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+    
+
+class IngresarObjetivoDescripcionView(View):
+    template_name = 'core/ingresar_objetivo_descripcion.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+    
+    
+class IdentificarProductoView(View):
+    template_name = 'core/identificar_producto.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+    
+    
+class IdentificarRequerimientosView(View):
+    template_name = 'core/identificar_requerimientos.html'
+
+    def get(self, request, *args, **kwargs):
+        # Aquí podrías recuperar los requerimientos de calidad de la base de datos si ya se han agregado
+        requerimientos = [
+            {'categoria': 'Funcionalidad', 'descripcion': 'El software debe cumplir con los requisitos funcionales especificados en la documentación.'},
+            # ... Otros requerimientos
+        ]
+        return render(request, self.template_name, {'requerimientos': requerimientos})

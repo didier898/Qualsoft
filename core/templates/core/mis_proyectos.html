@@ -1,15 +1,11 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-  <h2>Tus Proyectos</h2>
+  <h2>Mis Proyectos</h2>
   
-  {% if proyectos %}
-    <ul>
-      {% for proyecto in proyectos %}
-        <li>{{ proyecto.nombre_proyecto }}</li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No tienes proyectos aún.</p>
-  {% endif %}
+  <ul>
+    {% for proyecto in proyectos %}
+      <li>{{ proyecto.nombre_proyecto }}</li>
+    {% endfor %}
+  </ul>
 {% endblock %}

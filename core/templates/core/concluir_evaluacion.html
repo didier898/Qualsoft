@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Concluir Evaluación{% endblock %}
+
+{% block content %}
+    <h2>Conclusión de la Evaluación</h2>
+{% load static %}
+    <div>
+        <img src="{% static 'core/imagen_conclusion_evaluacion.jpg' %}" alt="Imagen de Conclusión de Evaluación">
+    </div>
+
+    <div>
+        <p>Selecciona una opción:</p>
+        <a href="{% url 'establecer_requisitos' %}">Generar Informe Detallado</a>
+        <a href="{% url 'establecer_requisitos' %}">Generar Informe General</a>
+        <a href="{% url 'establecer_requisitos' %}">Generar Informe de Recomendaciones</a>
+    </div>
+{% endblock %}

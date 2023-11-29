@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Evaluar Producto{% endblock %}
+
+{% block content %}
+    <h2>Evaluación del Producto</h2>
+
+    <div>
+        <img src="{% static 'core/imagen_evaluacion_producto.jpg' %}" alt="Imagen de Evaluación del Producto">
+    </div>
+
+    <div>
+        <p>Selecciona una opción:</p>
+        <a href="{% url 'ingresar_objetivo_descripcion' %}">Realizar prueba</a>
+        <a href="{% url 'ingresar_objetivo_descripcion' %}">Obtener Resultados</a>
+    </div>
+{% endblock %}

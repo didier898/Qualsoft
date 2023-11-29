@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Establecer Requisitos{% endblock %}
+
+{% block content %}
+{% load static %}
+<div>
+    <img src="{% static 'core/imagen_proyecto.png' %}" alt="Imagen de Nuevo Proyecto">
+</div>
+    <h2>Establecer Requisitos</h2>
+
+    <div>
+        <p>Selecciona una opción:</p>
+        <a href="{% url 'ingresar_objetivo_descripcion' %}"><button>Ingresar Objetivo o Descripción</button></a>
+        <a href="{% url 'identificar_producto' %}"><button>Identificar Producto a Evaluar</button></a>
+        <a href="{% url 'identificar_requerimientos' %}"><button>Identificar Requerimientos de Calidad</button></a>
+    </div>
+{% endblock %}

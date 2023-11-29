@@ -1,0 +1,23 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Crear Nuevo Proyecto{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div>
+    <img src="{% static 'core/imagen_proyecto.png' %}" alt="Imagen de Nuevo Proyecto">
+</div>
+<div>
+    <a href="{% url 'establecer_requisitos' %}"><button>Establecer Requisitos y Objetivos</button></a>
+</div>
+<div>
+    <a href="{% url 'especificar_evaluacion' %}"><button>Especificar la Evaluación</button></a>
+</div>
+<div>
+    <a href="{% url 'evaluar_producto' %}"><button>Evaluar el Producto</button></a>
+</div>
+<div>
+    <a href="{% url 'evaluar_producto' %}"><button>Concluir Evaluación</button></a>
+</div>
+{% endblock %}

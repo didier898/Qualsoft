@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Especificar Evaluación{% endblock %}
+{% load static %}
+
+{% block content %}
+    <h2>Especificar Evaluación</h2>
+
+    <div>
+        <img src="{% static 'core/imagen_evaluacion.jpg' %}" alt="Imagen de Evaluación">
+    </div>
+
+    <div>
+        <p>Selecciona una opción:</p>
+        <button>Riesgos de la Evaluación</button></a>
+        <button>Características</button></a>
+        <button>Subcaracterísticas</button></a>
+        <button>Atributos</button></a>
+        <button>Criterios de Aprobación</button></a>
+    </div>
+{% endblock %}
