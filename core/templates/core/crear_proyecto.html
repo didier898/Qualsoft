@@ -9,6 +9,21 @@
     <img src="{% static 'core/imagen_proyecto.png' %}" alt="Imagen de Nuevo Proyecto">
 </div>
 <div>
+    <form method="post" action="{% url 'crear_proyecto' %}">
+        {% csrf_token %}
+        <label for="nombre_proyecto">Nombre del Proyecto:</label>
+        <input type="text" id="nombre_proyecto" name="nombre_proyecto" required>
+        <br>
+        <label for="fecha_proyecto">Fecha del Proyecto:</label>
+        <input type="date" id="fecha_proyecto" name="fecha_proyecto" required>
+        <br>
+        <label for="nombre_producto">Nombre del Producto:</label>
+        <input type="text" id="nombre_producto" name="nombre_producto" required>
+        <br>
+        <button type="submit">Guardar Proyecto</button>
+    </form>
+</div>
+<div>
     <a href="{% url 'establecer_requisitos' %}"><button>Establecer Requisitos y Objetivos</button></a>
 </div>
 <div>

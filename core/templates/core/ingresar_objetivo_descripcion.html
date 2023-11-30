@@ -5,12 +5,15 @@
 {% block content %}
     <h2>Ingresar Objetivo o Descripción</h2>
 
-    <div>
-        <p>Ingrese los objetivos o descripción del proyecto:</p>
-        <textarea rows="4" cols="50" placeholder="Ingrese aquí..."></textarea>
-    </div>
+    <form method="post">
+        {% csrf_token %}
+        <div>
+            <p>Ingrese los objetivos o descripción del proyecto:</p>
+            <textarea name="objetivos_descripcion" rows="4" cols="50" placeholder="Ingrese aquí..."></textarea>
+        </div>
 
-    <div>
-        <button>Guardar</button>
-    </div>
+        <div>
+            <button type="submit">Guardar</button>
+        </div>
+    </form>
 {% endblock %}

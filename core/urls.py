@@ -14,6 +14,7 @@ from .views import IdentificarRequerimientosView
 #from .views import ConcluirEvaluacionView, GenerarInformeDetalladoView, GenerarInformeGeneralView, GenerarInformeRecomendacionesView
 from .views import IdentificarProductoView
 
+
 urlpatterns = [
     path('', views.inicio, name='inicio'),  # Ruta para la vista de inicio
     path('inicio-sesion/', inicio_sesion, name='inicio_sesion'),

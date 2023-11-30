@@ -3,6 +3,18 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.views import View
 from .models import Proyecto
+from django.shortcuts import render, redirect
+from django.views import View
+from .models import Proyecto, Producto
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Proyecto
+from django.shortcuts import render, redirect
+from django.views import View
+from .forms import ObjetivoDescripcionForm
+from .models import Producto
 
 def inicio(request):
     return render(request, 'core/inicio.html')
@@ -38,19 +50,42 @@ def principal(request):
     # Puedes agregar lógica adicional aquí si es necesario
     return render(request, 'core/principal.html')
 
+@login_required
 def mis_proyectos(request):
     # Obtén todos los proyectos del usuario actual
     proyectos = Proyecto.objects.filter(usuario=request.user)
 
-    # Puedes agregar más contexto según sea necesario
-
     return render(request, 'core/mis_proyectos.html', {'proyectos': proyectos})
 
+@method_decorator(login_required, name='dispatch')
 class CrearProyectoView(View):
     template_name = 'core/crear_proyecto.html'
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
+
+    def post(self, request, *args, **kwargs):
+        nombre_proyecto = request.POST.get('nombre_proyecto')
+        fecha_proyecto = request.POST.get('fecha_proyecto')
+        nombre_producto = request.POST.get('nombre_producto')
+
+        # Crear un nuevo proyecto
+        proyecto = Proyecto.objects.create(
+            nombre_proyecto=nombre_proyecto,
+            fecha_proyecto=fecha_proyecto,
+            usuario=request.user,
+        )
+
+        # Crear un nuevo producto asociado al proyecto
+        producto = Producto.objects.create(
+            proyecto=proyecto,
+            nombre_producto=nombre_producto,
+            fecha_creacion=fecha_proyecto,
+            
+        )
+
+        # Redireccionar a la siguiente etapa del proceso
+        return redirect('establecer_requisitos')  # Puedes ajustar la URL según tu configuración
 
 
 class EstablecerRequisitosView(View):
@@ -77,6 +112,21 @@ class IngresarObjetivoDescripcionView(View):
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
+
+    def post(self, request, *args, **kwargs):
+        # Obtiene el valor del campo 'objetivos_descripcion' del formulario
+        objetivos_descripcion = request.POST.get('objetivos_descripcion', '')
+
+        # Obtiene el producto actual del usuario (esto podría variar según tu lógica)
+        producto = Producto.objects.filter(proyecto__usuario=request.user).first()
+
+        # Actualiza el campo 'objetivo_producto' del producto con la descripción ingresada
+        if producto:
+            producto.objetivo_producto = objetivos_descripcion
+            producto.save()
+
+        # Redirige a otra vista o muestra un mensaje de éxito, según tu lógica
+        return redirect('identificar_producto')
     
     
 class IdentificarProductoView(View):

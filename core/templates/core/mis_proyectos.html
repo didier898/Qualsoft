@@ -3,9 +3,13 @@
 {% block content %}
   <h2>Mis Proyectos</h2>
   
-  <ul>
-    {% for proyecto in proyectos %}
-      <li>{{ proyecto.nombre_proyecto }}</li>
-    {% endfor %}
-  </ul>
+  {% if proyectos %}
+    <ul>
+      {% for proyecto in proyectos %}
+        <li>{{ proyecto.nombre_proyecto }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No tienes proyectos aún.</p>
+  {% endif %}
 {% endblock %}
