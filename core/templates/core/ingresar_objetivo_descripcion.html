@@ -7,11 +7,7 @@
 
     <form method="post">
         {% csrf_token %}
-        <div>
-            <p>Ingrese los objetivos o descripción del proyecto:</p>
-            <textarea name="objetivos_descripcion" rows="4" cols="50" placeholder="Ingrese aquí..."></textarea>
-        </div>
-
+        {{ form.as_p }}
         <div>
             <button type="submit">Guardar</button>
         </div>

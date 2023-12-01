@@ -5,16 +5,19 @@
 {% block content %}
     <h2>Define el Tipo de Producto a Evaluar</h2>
 
-    <div>
-        <p>Seleccione una de las siguientes opciones:</p>
-        <input type="radio" id="producto_intermedio" name="tipo_producto" value="intermedio">
-        <label for="producto_intermedio">Producto Intermedio</label><br>
+    <form method="post" action="{% url 'identificar_producto' producto=producto_id %}">
+        {% csrf_token %}
+        <div>
+            <p>Seleccione una de las siguientes opciones:</p>
+            <input type="radio" id="producto_intermedio" name="tipo_producto" value="intermedio">
+            <label for="producto_intermedio">Producto Intermedio</label><br>
 
-        <input type="radio" id="producto_final" name="tipo_producto" value="final">
-        <label for="producto_final">Producto Final</label>
-    </div>
+            <input type="radio" id="producto_final" name="tipo_producto" value="final">
+            <label for="producto_final">Producto Final</label>
+        </div>
 
-    <div>
-        <button>Guardar</button>
-    </div>
+        <div>
+            <button type="submit">Guardar</button>
+        </div>
+    </form>
 {% endblock %}

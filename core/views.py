@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.views import View
 from .models import Proyecto
+from .forms import ObjetivoForm
 from django.shortcuts import render, redirect
 from django.views import View
 from .models import Proyecto, Producto
@@ -13,8 +14,32 @@ from django.contrib.auth.decorators import login_required
 from .models import Proyecto
 from django.shortcuts import render, redirect
 from django.views import View
-from .forms import ObjetivoDescripcionForm
 from .models import Producto
+from django.shortcuts import render, redirect
+from django.views import View
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+from .models import Proyecto, Producto
+from django.shortcuts import render, redirect
+from django.views import View
+from .models import Producto
+from django.shortcuts import render
+from django.views import View
+from django.shortcuts import redirect
+from .forms import ObjetivoForm
+from .models import Producto
+from django.shortcuts import render, redirect
+from django.views import View
+from .models import Proyecto, Producto
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from .forms import CrearProyectoForm
+from django.shortcuts import render
+from django.views import View
+from django.shortcuts import redirect
+from .forms import ObjetivoForm
+from .models import Producto
+
 
 def inicio(request):
     return render(request, 'core/inicio.html')
@@ -62,30 +87,44 @@ class CrearProyectoView(View):
     template_name = 'core/crear_proyecto.html'
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
+        form = CrearProyectoForm()
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
-        nombre_proyecto = request.POST.get('nombre_proyecto')
-        fecha_proyecto = request.POST.get('fecha_proyecto')
-        nombre_producto = request.POST.get('nombre_producto')
+        form = CrearProyectoForm(request.POST)
 
-        # Crear un nuevo proyecto
-        proyecto = Proyecto.objects.create(
-            nombre_proyecto=nombre_proyecto,
-            fecha_proyecto=fecha_proyecto,
-            usuario=request.user,
-        )
+        if form.is_valid():
+            nombre_proyecto = form.cleaned_data['nombre_proyecto']
+            fecha_proyecto = form.cleaned_data['fecha_proyecto']
+            nombre_producto = form.cleaned_data['nombre_producto']
 
-        # Crear un nuevo producto asociado al proyecto
-        producto = Producto.objects.create(
-            proyecto=proyecto,
-            nombre_producto=nombre_producto,
-            fecha_creacion=fecha_proyecto,
-            
-        )
+            # Crear un nuevo proyecto
+            proyecto = Proyecto.objects.create(
+                nombre_proyecto=nombre_proyecto,
+                fecha_proyecto=fecha_proyecto,
+                usuario=request.user,
+            )
 
-        # Redireccionar a la siguiente etapa del proceso
-        return redirect('establecer_requisitos')  # Puedes ajustar la URL según tu configuración
+            # Crear un nuevo producto asociado al proyecto
+            producto = Producto.objects.create(
+                id_proyecto=proyecto,
+                nombre_producto=nombre_producto,
+                tipo_producto='',  # Agrega un valor para el tipo_producto
+                usuario=request.user,  # Asigna el usuario actual al campo usuario
+            )
+
+            # Asignar el producto al proyecto
+            proyecto.producto = producto
+            proyecto.save()
+
+            # Redireccionar a la siguiente etapa del proceso
+            return redirect('establecer_requisitos')
+        else:
+            # Manejar el caso en que el formulario no sea válido
+            print("El formulario no es válido.")
+
+        return render(request, self.template_name, {'form': form})
+
 
 
 class EstablecerRequisitosView(View):
@@ -111,38 +150,31 @@ class IngresarObjetivoDescripcionView(View):
     template_name = 'core/ingresar_objetivo_descripcion.html'
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
+        form = ObjetivoForm()
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
-        # Obtiene el valor del campo 'objetivos_descripcion' del formulario
-        objetivos_descripcion = request.POST.get('objetivos_descripcion', '')
+        form = ObjetivoForm(request.POST)
 
-        # Obtiene el producto actual del usuario (esto podría variar según tu lógica)
-        producto = Producto.objects.filter(proyecto__usuario=request.user).first()
+        if form.is_valid():
+            objetivos_descripcion = form.cleaned_data['objetivos_descripcion']
 
-        # Actualiza el campo 'objetivo_producto' del producto con la descripción ingresada
-        if producto:
-            producto.objetivo_producto = objetivos_descripcion
-            producto.save()
+            # Obtén el producto actual del usuario
+            producto = request.user.productos.first()
 
-        # Redirige a otra vista o muestra un mensaje de éxito, según tu lógica
-        return redirect('identificar_producto')
+            if producto:
+                # Actualiza el campo 'objetivo_producto' del producto con la descripción ingresada
+                producto.objetivo_producto = objetivos_descripcion
+                producto.save()
+                print(f'Objetivo Producto después de guardar: {producto.objetivo_producto}')
+
+                # Redirige a otra vista o muestra un mensaje de éxito, según tu lógica
+                return redirect('crear_proyecto')
+            else:
+                # Manejar el caso en que no se encuentre un producto
+                print('No se encontró un producto asociado al usuario.')
+
+        return render(request, self.template_name, {'form': form})
+
+       
     
-    
-class IdentificarProductoView(View):
-    template_name = 'core/identificar_producto.html'
-
-    def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
-    
-    
-class IdentificarRequerimientosView(View):
-    template_name = 'core/identificar_requerimientos.html'
-
-    def get(self, request, *args, **kwargs):
-        # Aquí podrías recuperar los requerimientos de calidad de la base de datos si ya se han agregado
-        requerimientos = [
-            {'categoria': 'Funcionalidad', 'descripcion': 'El software debe cumplir con los requisitos funcionales especificados en la documentación.'},
-            # ... Otros requerimientos
-        ]
-        return render(request, self.template_name, {'requerimientos': requerimientos})
