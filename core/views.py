@@ -39,7 +39,16 @@ from django.views import View
 from django.shortcuts import redirect
 from .forms import ObjetivoForm
 from .models import Producto
-
+# En tu archivo views.py
+from django.shortcuts import render, redirect
+from django.views import View
+from .forms import IdentificarProductoForm
+from .models import Producto
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from .models import Requisito
+from .forms import RequisitoForm
+from django.shortcuts import get_object_or_404
 
 def inicio(request):
     return render(request, 'core/inicio.html')
@@ -176,5 +185,70 @@ class IngresarObjetivoDescripcionView(View):
 
         return render(request, self.template_name, {'form': form})
 
+@method_decorator(login_required, name='dispatch')
+class IdentificarProductoView(View):
+    template_name = 'core/identificar_producto.html'
+
+    def get(self, request, *args, **kwargs):
+        form = IdentificarProductoForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = IdentificarProductoForm(request.POST)
+
+        if form.is_valid():
+            tipo_producto = form.cleaned_data['tipo_producto']
+
+            # Obtén el producto actual del usuario
+            producto = request.user.productos.first()
+
+            if producto:
+                # Actualiza el campo 'tipo_producto' del producto con la elección realizada
+                producto.tipo_producto = tipo_producto
+                producto.save()
+
+                # Redirige a otra vista o muestra un mensaje de éxito, según tu lógica
+                return redirect('crear_proyecto')  # Reemplaza 'otra_vista' con el nombre de la vista a la que deseas redirigir
+            else:
+                # Manejar el caso en que no se encuentre un producto
+                print('No se encontró un producto asociado al usuario.')
+
+        return render(request, self.template_name, {'form': form})
        
     
+class IdentificarRequerimientosView(View):
+    template_name = 'core/identificar_requerimientos.html'
+
+    def get(self, request, *args, **kwargs):
+        form = RequisitoForm()
+        requisitos = Requisito.objects.all()
+        return render(request, self.template_name, {'form': form, 'requisitos': requisitos})
+
+    def post(self, request, *args, **kwargs):
+        form = RequisitoForm(request.POST)
+
+        if form.is_valid():
+            descripcion = form.cleaned_data['descripcion']
+
+            # Crear un nuevo requisito
+            requisito = Requisito.objects.create(descripcion=descripcion)
+
+            # Redireccionar a la misma vista para mostrar el nuevo requisito
+            return redirect('identificar_requerimientos')
+        else:
+            # Manejar el caso en que el formulario no sea válido
+            print("El formulario no es válido.")
+
+        requisitos = Requisito.objects.all()
+        return render(request, self.template_name, {'form': form, 'requisitos': requisitos})
+    
+    
+    
+
+class EliminarRequerimientoView(View):
+    template_name = 'core/eliminar_requerimiento.html'  # Puedes crear esta plantilla si es necesario
+
+    def get(self, request, requisito_id, *args, **kwargs):
+        requisito = get_object_or_404(Requisito, pk=requisito_id)
+        requisito.delete()
+        return redirect('identificar_requerimientos')

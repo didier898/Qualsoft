@@ -8,6 +8,8 @@ from .views import CrearProyectoView, EstablecerRequisitosView, EspecificarEvalu
 from .views import EstablecerRequisitosView
 from .views import IngresarObjetivoDescripcionView
 from .views import EspecificarEvaluacionView
+from .views import IdentificarProductoView
+from .views import IdentificarRequerimientosView, EliminarRequerimientoView
 #from .views import IdentificarRequerimientosView
 #RiesgosEvaluacionView, CaracteristicasEvaluacionView, SubcaracteristicasEvaluacionView, AtributosEvaluacionView, CriteriosAprobacionView
 #from .views import EjecutarPruebaView, ObtenerResultadosView
@@ -24,8 +26,10 @@ urlpatterns = [
     path('crear_proyecto/', CrearProyectoView.as_view(), name='crear_proyecto'),
     path('establecer_requisitos/', EstablecerRequisitosView.as_view(), name='establecer_requisitos'),
     path('ingresar_objetivo_descripcion/', IngresarObjetivoDescripcionView.as_view(), name='ingresar_objetivo_descripcion'),
-    #path('identificar_producto/<int:producto>/', IdentificarProductoView.as_view(), name='identificar_producto'),
+    path('identificar_producto/', IdentificarProductoView.as_view(), name='identificar_producto'),
     path('especificar_evaluacion/', EspecificarEvaluacionView.as_view(), name='especificar_evaluacion'),
+    path('identificar_requerimientos/', IdentificarRequerimientosView.as_view(), name='identificar_requerimientos'),
+    path('eliminar_requerimiento/<int:requisito_id>/', EliminarRequerimientoView.as_view(), name='eliminar_requerimiento'),
     #path('identificar_requerimientos/', IdentificarRequerimientosView.as_view(), name='identificar_requerimientos'),
     path('evaluar_producto/', EvaluarProductoView.as_view(), name='evaluar_producto'),
     #path('concluir_evaluacion/', ConcluirEvaluacionView.as_view(), name='concluir_evaluacion'),

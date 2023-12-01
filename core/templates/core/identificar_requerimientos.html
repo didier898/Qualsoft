@@ -1,1 +1,90 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Identificar Requerimientos de Calidad{% endblock %}
+
+{% block content %}
+    <h2>Identificar Requerimientos de Calidad</h2>
+    <p>Seleccione los requerimientos que aplican al proyecto:</p>
+  
+  <!-- Requerimientos de Funcionalidad -->
+  <h3>Requerimientos de Funcionalidad:</h3>
+  <ul>
+    <li>El software debe cumplir con los requisitos funcionales especificados en la documentación.</li>
+    <li>Todas las funciones principales del software deben ser implementadas y operar según lo esperado.</li>
+  </ul>
+
+  <!-- Requerimientos de Fiabilidad -->
+  <h3>Requerimientos de Fiabilidad:</h3>
+  <ul>
+    <li>El software debe ser capaz de manejar situaciones inesperadas o errores de manera robusta.</li>
+    <li>El software debe tener una alta disponibilidad y minimizar el tiempo de inactividad.</li>
+  </ul>
+
+  <!-- Requerimientos de Eficiencia -->
+  <h3>Requerimientos de Eficiencia:</h3>
+  <ul>
+    <li>El software debe ejecutarse de manera eficiente y utilizar recursos de manera óptima.</li>
+    <li>Los tiempos de respuesta del software deben cumplir con los límites establecidos.</li>
+  </ul>
+
+  <!-- Requerimientos de Mantenibilidad -->
+  <h3>Requerimientos de Mantenibilidad:</h3>
+  <ul>
+    <li>El código fuente debe ser claro y bien documentado para facilitar futuras modificaciones.</li>
+    <li>Deben existir mecanismos para realizar actualizaciones y correcciones de manera sencilla.</li>
+  </ul>
+
+  <!-- Requerimiento de Portabilidad -->
+  <h3>Requerimiento de Portabilidad:</h3>
+  <ul>
+    <li>El software debe ser compatible con diferentes sistemas operativos y plataformas.</li>
+    <li>Debe ser fácil de instalar y configurar en entornos diversos.</li>
+  </ul>
+
+  <!-- Requerimientos de Usabilidad -->
+  <h3>Requerimientos de Usabilidad:</h3>
+  <ul>
+    <li>La interfaz de usuario debe ser intuitiva y fácil de usar.</li>
+    <li>El software debe proporcionar retroalimentación clara y comprensible al usuario.</li>
+  </ul>
+
+  <!-- Requerimientos de Seguridad -->
+  <h3>Requerimientos de Seguridad:</h3>
+  <ul>
+    <li>El software debe proteger la información sensible y garantizar la confidencialidad.</li>
+    <li>Debe haber medidas de seguridad contra amenazas conocidas, como ataques de denegación de servicio.</li>
+  </ul>
+
+  <!-- Requerimientos de Cumplimiento Normativo -->
+  <h3>Requerimientos de Cumplimiento Normativo:</h3>
+  <ul>
+    <li>El software debe cumplir con las regulaciones y normativas relevantes para su uso.</li>
+  </ul>
+
+  <!-- Requerimientos de Desempeño -->
+  <h3>Requerimientos de Desempeño:</h3>
+  <ul>
+    <li>El software debe ser capaz de manejar la carga de trabajo esperada sin degradación significativa del rendimiento.</li>
+  </ul>
+
+  <!-- Requerimientos de Documentación -->
+  <h3>Requerimientos de Documentación:</h3>
+  <ul>
+    <li>Se deben proporcionar manuales y documentación clara para usuarios y desarrolladores.</li>
+    <li>La documentación debe mantenerse actualizada con cada nueva versión del software.</li>
+  </ul>
+
+    <form method="post" action="{% url 'identificar_requerimientos' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Agregar Requerimiento</button>
+    </form>
+
+    <h3>Requerimientos Actuales:</h3>
+    <ul>
+        {% for requisito in requisitos %}
+            <li>{{ requisito.descripcion }} <a href="{% url 'eliminar_requerimiento' requisito.requisito %}">Eliminar</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
 
